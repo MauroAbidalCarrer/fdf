@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 21:24:55 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/13 00:00:55 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/14 15:26:05 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,6 @@ char	*dup_until_sep(char const*str, char sep)
 	return (word);
 }
 
-void	free_strings(char **words, size_t nb_words)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < nb_words)
-		free(words[i++]);
-	free(words);
-}
-
 char	**ft_split(char const *s, char c)
 {
 	size_t	i;
@@ -86,7 +76,7 @@ char	**ft_split(char const *s, char c)
 			s = skip(s, c);
 		words[i] = dup_until_sep(s, c);
 		if (words[i] == NULL)
-			return (free_strings(words, i), NULL);
+			return (free_tab(words, i), NULL);
 		s = skip(s, c);
 		i++;
 	}

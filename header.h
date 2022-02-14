@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 17:33:10 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/13 18:29:37 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/14 17:16:19 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 #  define Z 2
 # endif
 
+//vector
 typedef struct s_v
 {
 	double	x;
@@ -43,17 +44,6 @@ typedef struct s_v
 	double	z;
 }	t_v;
 
-//wf = wireframe
-//width = X, length = Y, height = Z
-typedef struct s_wf
-{
-	double **heights;
-	int	width;
-	int	length;
-	double	max_height;
-}	t_wf;
-
-//vector utils
 t_v	sum(t_v a, t_v b);
 t_v	dif(t_v a, t_v b);
 t_v	mul(t_v a, t_v b);
@@ -66,7 +56,49 @@ double	ft_abs(double a);
 double	magnitude(t_v v);
 t_v	new_v();
 t_v	set(t_v v);
-
 void	print_v2(t_v v);
 void	print_v3(t_v v);
+t_v	angles_to_vector(t_v angles);
+
+//wireframe
+typedef struct s_wf
+{
+	double	**heights;
+	int	width;
+	int	length;
+	double	max_height;
+}	t_wf;
+
+//display
+# ifndef PIX_PER_SIDE
+#  define PIX_PER_SIDE 1200
+# endif
+# ifndef FRACTION_OF_SCREEN
+#  define FRACTION_OF_SCREEN 0.75
+# endif
+
+//sp = screen_points
+typedef struct s_display_data
+{
+	t_v	cam_rot;
+	t_v	**sp;
+}	t_display_data;
+
+//mlx
+typedef struct s_mlx_data
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+}	t_mlx_data;
+
+//transformations
+# ifndef DEG2RAD
+#  define DEG2RAD 0.0174533
+# endif
+# ifndef STARTING_ROTX
+#  define STARTING_ROTX 45
+# endif
+# ifndef STARTING_ROTY
+#  define STARTING_ROTY 45
+# endif
 #endif

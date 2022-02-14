@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 17:30:22 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/12 22:07:49 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/14 17:17:44 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,6 @@ double	magnitude(t_v v)
 	return (sqrt(v.x * v.x + v.y * v.y));
 }
 
-t_v	new_v()
-{
-	t_v v;
-
-	v.x = 0;
-	v.y = 0;
-	v.z = 0;
-	return (v);
-}
-
 t_v	set(t_v v)
 {
 	t_v new;
@@ -74,4 +64,29 @@ t_v	set(t_v v)
 	new.y = v.y;
 	new.z = v.z;
 	return (new);
+}
+
+t_v	new_v(double x, double y, double z)
+{
+	t_v v;
+
+	v.x = x;
+	v.y = y;
+	v.z = z;
+	return (v);
+}
+
+t_v	angles_to_vector(t_v angles)
+{
+	t_v	horizontal;
+
+	angles = mul_d(angles, DEG2RAD);
+	horizontal = new_v(cos(angles.y), sin(angles.y), 0);
+	horizontal = mul_d(horizontal, cos(angles.x));
+	return (new_v(horizontal.x, sin(angles.y), horizontal.y));
+}
+
+double	dot(t_v a, t_v b)
+{
+	return (a.x * b.x + b.y * b.y);
 }

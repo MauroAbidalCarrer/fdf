@@ -6,7 +6,7 @@
 #    By: maabidal <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/29 20:08:50 by maabidal          #+#    #+#              #
-#    Updated: 2022/02/13 18:36:02 by maabidal         ###   ########.fr        #
+#    Updated: 2022/02/14 15:24:17 by maabidal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ SRCS =	get_next_line.c\
 	get_next_line_utils.c\
 	ft_atof.c\
 	split.c\
-	clear.c
+	mem.c
 
 NAME	= libft.a
 CC	= gcc
