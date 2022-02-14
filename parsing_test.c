@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/13 00:01:54 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/14 17:23:22 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/14 19:56:02 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_wf	parse_file(char *pathname)
 {
 	t_wf	wf;
 
-	init_dimensions(pathname);
+	wf = init_dimensions(pathname);
 	wf.heights = (double **)alloc_tab(sizeof(double), wf.width, wf.length);
 	if (wf.heights == NULL)
 		exit(1);
@@ -90,6 +90,6 @@ int	main(int ac, char **av)
 			printf("%f ", wf.heights[j][i]);
 		printf("\n");
 	}
-
-	free_tab((void **)wf.heights, wf.width);
+	if (wf.heights)
+		free_tab((void **)wf.heights, wf.width - 1);
 }

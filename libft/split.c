@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 21:24:55 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/14 15:26:05 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/14 19:18:51 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	**ft_split(char const *s, char c)
 			s = skip(s, c);
 		words[i] = dup_until_sep(s, c);
 		if (words[i] == NULL)
-			return (free_tab(words, i), NULL);
+			return (free_tab((void **)words, i), NULL);
 		s = skip(s, c);
 		i++;
 	}

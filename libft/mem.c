@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/13 00:01:54 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/14 17:24:06 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/14 19:55:42 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	clear_mem(void *bytes, int nb_bytes)
 		((unsigned char *) bytes)[nb_bytes] = 0;
 }
 
-void	free_tab(void **ptr, int x)
+void	free_tab(void **ptr, int i)
 {
-	while (x >= 0)
-		free(ptr[x--]);
+	while (i >= 0)
+		free(ptr[i--]);
 	free(ptr);
 }
 
@@ -40,7 +40,6 @@ void	**alloc_tab(size_t element_size, int x, int y)
 			free_tab(ptr, x);
 			return (NULL);
 		}
-		x++;
 	}
 	return (ptr);
 }
