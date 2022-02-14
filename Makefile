@@ -6,21 +6,21 @@
 #    By: maabidal <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/29 20:08:50 by maabidal          #+#    #+#              #
-#    Updated: 2022/02/13 00:10:41 by maabidal         ###   ########.fr        #
+#    Updated: 2022/02/13 22:04:58 by maabidal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 INC = header.h
 
-SRCS += test.c
+SRCS += parsing_test.c
 SRCS += vector_utils2.c
-SRCS +=vector_utils.c
+SRCS += vector_utils.c
 
 OBJS_DIR = obj/
 OBJS = $(addprefix $(OBJS_DIR),$(SRCS:.c=.o))
 
-CC = gcc #-Wall -Wextra -Werror
+CC = gcc -g3 #-Wall -Wextra -Werror
 
 MLX_DIR = ./mlx
 MLX_LNK	= -L $(MLX_DIR) -l mlx -lXext -lX11
@@ -49,7 +49,7 @@ $(LFT_LIB):
 
 clean:
 	rm -rf $(OBJS)
-	rm -tf $(OBJS_DIR)
+	rm -rf $(OBJS_DIR)
 	$(MAKE) clean -C $(MLX_DIR)
 	$(MAKE) clean -C $(LFT_DIR)
 

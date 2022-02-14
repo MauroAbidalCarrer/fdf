@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 17:33:10 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/12 23:40:14 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/13 18:29:37 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 
 #include<stdlib.h>
 # include "mlx.h"
-//# include "libft.h"
+# include <fcntl.h>
+# include "libft.h"
 # include <math.h>
 # ifndef COLOR
 #  define COLOR 244 << 8
@@ -41,6 +42,16 @@ typedef struct s_v
 	double	y;
 	double	z;
 }	t_v;
+
+//wf = wireframe
+//width = X, length = Y, height = Z
+typedef struct s_wf
+{
+	double **heights;
+	int	width;
+	int	length;
+	double	max_height;
+}	t_wf;
 
 //vector utils
 t_v	sum(t_v a, t_v b);

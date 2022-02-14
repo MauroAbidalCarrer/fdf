@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 18:27:44 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/13 00:00:39 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/13 19:53:20 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ size_t	n_index(char *str);
 
 //split
 char	**ft_split(char const *s, char c);
+void	free_strings(char **words, size_t nb_words);
 
 double	ft_atof(const char *nptr);
+
+void	ft_clear(void *bytes, int nb_bytes);
 #endif
