@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 17:33:10 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/14 23:33:40 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/15 15:20:18 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,20 @@ typedef struct s_wf
 t_wf	parse_file(char *pathname);
 
 //mlx
+# define KEY_UP_M 126
+# define KEY_UP_L 65362
+# define KEY_DOWN_M 125
+# define KEY_DOWN_L 65364
+# define KEY_LEFT_M 123
+# define KEY_LEFT_L 65361
+# define KEY_RIGHT_M 124
+# define KEY_RIGHT_L 65363
+# define KEY_ESC_M 53
+# define KEY_ESC_L 65307
 typedef struct s_mlx_data
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
+	void	*mlx;
+	void	*win;
 }	t_mlx_data;
 
 void	draw_line(t_v point, t_v end, t_mlx_data mlx_data);
@@ -103,5 +113,13 @@ typedef struct s_display_data
 	t_v	cam_rot;
 	t_v	**sp;
 }	t_display_data;
-void	draw_wf(t_wf wf, t_v cam_rot, t_v **screen_points, t_mlx_data mlx_data);
 
+//all
+typedef struct s_all_data
+{
+	t_display_data	*display;
+	t_mlx_data		*mlx;
+	t_wf			*wf;
+}	t_all_data;
+
+void	draw_wf(t_all_data *data);
