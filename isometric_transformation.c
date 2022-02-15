@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 13:53:03 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/15 15:48:25 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/15 19:00:08 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,13 @@ void	apply_isometric_matrix(t_wf wf, t_v upward, t_v sideway, t_v **sp)
 	}
 }
 
-void	mk_isometric_matrix(t_wf wf, t_v cam_rot, t_v *upward, t_v *sideway)
+void	mk_isometric_matrix(t_wf wf, t_display_data display, t_v *upward, t_v *sideway)
 {
 	t_v	max_point;
 	double	calibration;
+	t_v	cam_rot;
+
+	cam_rot = display.cam_rot;
 
 //create to_screen matrix
 t_v angles_upward;
@@ -75,6 +78,7 @@ angles_sideway.z = 0;
 	calibration /= magnitude(max_point);
 //printf("magnitude(max_point) = %f\n", magnitude(max_point));
 	//calibration *= FRACTION_OF_SCREEN;
+	calibration *= display.zoom;
 	*upward = mul_d(*upward, calibration);
 	*sideway = mul_d(*sideway, calibration);
 }
@@ -86,7 +90,11 @@ void	draw_wf(t_all_data *data)
 	t_v	upward;
 	t_v	sideway;
 
-	mk_isometric_matrix(*data->wf, data->display->cam_rot, &upward, &sideway);
+	if (data->display->is_processing == 1)
+		return ;
+	data->display->is_processing = 1;
+	mk_isometric_matrix(*data->wf, *data->display, &upward, &sideway);
 	apply_isometric_matrix(*data->wf, upward, sideway, data->display->sp);
 	draw_segments(data->display->sp,  *data->wf, *data->mlx);
+	data->display->is_processing = 0;
 }

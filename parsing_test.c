@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/13 00:01:54 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/14 20:16:13 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/14 23:52:13 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_wf	init_dimensions(char *pathname)
 	return (wf);
 }
 
-void	fill_wf(t_wf wf, char *pathname)
+t_wf	fill_wf(t_wf wf, char *pathname)
 {
 	int	fd;
 	char	*line;
@@ -54,15 +54,17 @@ void	fill_wf(t_wf wf, char *pathname)
 		point[X] = -1;
 		while (++point[X] < wf.width)
 		{
-			if (ft_atof(c_heights[point[X]]) > wf.max_height)
-				wf.max_height = ft_atof(c_heights[point[X]]);
-			wf.heights[point[X]][point[Y]] = ft_atof(c_heights[point[X]]);
+float height = ft_atof(c_heights[point[X]]) / 10.0;
+			if (height > wf.max_height)
+				wf.max_height = height;
+			wf.heights[point[X]][point[Y]] = height;
 		}
 		free_tab((void **)c_heights, wf.width);
 		free(line);
 		line = get_next_line(fd);
 		point[Y]++;
 	}
+	return (wf);
 	//free(line);?
 }
 
@@ -74,7 +76,8 @@ t_wf	parse_file(char *pathname)
 	wf.heights = (double **)alloc_tab(sizeof(double), wf.width, wf.length);
 	if (wf.heights == NULL)
 		exit(1);
-	fill_wf(wf, pathname);
+	wf = fill_wf(wf, pathname);
+//printf("max height = %f\n", wf.max_height);
 	return (wf);
 }
 /*

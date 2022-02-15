@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 17:33:10 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/15 15:20:18 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/15 19:00:32 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ typedef struct s_display_data
 {
 	t_v	cam_rot;
 	t_v	**sp;
+	double zoom;
+	int	is_processing;
 }	t_display_data;
 
 //all

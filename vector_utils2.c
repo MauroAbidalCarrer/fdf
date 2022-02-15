@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 17:30:22 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/14 17:17:44 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/14 23:27:54 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,28 @@ t_v	new_v(double x, double y, double z)
 	return (v);
 }
 
+
+t_v	angle_to_vector(double angle)
+{
+	angle *= DEG2RAD;
+//printf("angle = %f ", angle / DEG2RAD);print_v2(new_v(cos(angle), sin(angle), 0));
+	return (new_v(cos(angle), sin(angle), 0));
+}
+
 t_v	angles_to_vector(t_v angles)
 {
 	t_v	horizontal;
+	t_v	vertical;
 
-	angles = mul_d(angles, DEG2RAD);
-	horizontal = new_v(cos(angles.y), sin(angles.y), 0);
-	horizontal = mul_d(horizontal, cos(angles.x));
-	return (new_v(horizontal.x, sin(angles.y), horizontal.y));
+	//angles.x += 90.0;
+	horizontal = angle_to_vector(angles.y);
+	vertical = angle_to_vector(angles.x);
+	horizontal = mul_d(horizontal, vertical.x);
+	return (new_v(horizontal.x, vertical.y, horizontal.y));
 }
 
 double	dot(t_v a, t_v b)
 {
-	return (a.x * b.x + b.y * b.y);
+//printf("dot((%f, %f, %f), (%f, %f, %f)) = %f\n", a.x, a.y, a.z, b.x, b.y, b.z, (a.x * b.x + a.y * b.y));
+	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
