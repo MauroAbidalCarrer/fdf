@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 17:33:10 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/14 17:16:19 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/14 23:33:40 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@
 # include <fcntl.h>
 # include "libft.h"
 # include <math.h>
-# ifndef COLOR
-#  define COLOR 244 << 8
-# endif
 # ifndef CREAT_F
 #  define CRAET_F O_WRONLY | O_CREAT | O_TRUNC
 # endif
@@ -59,6 +56,7 @@ t_v	set(t_v v);
 void	print_v2(t_v v);
 void	print_v3(t_v v);
 t_v	angles_to_vector(t_v angles);
+double	dot(t_v a, t_v b);
 
 //wireframe
 typedef struct s_wf
@@ -68,21 +66,7 @@ typedef struct s_wf
 	int	length;
 	double	max_height;
 }	t_wf;
-
-//display
-# ifndef PIX_PER_SIDE
-#  define PIX_PER_SIDE 1200
-# endif
-# ifndef FRACTION_OF_SCREEN
-#  define FRACTION_OF_SCREEN 0.75
-# endif
-
-//sp = screen_points
-typedef struct s_display_data
-{
-	t_v	cam_rot;
-	t_v	**sp;
-}	t_display_data;
+t_wf	parse_file(char *pathname);
 
 //mlx
 typedef struct s_mlx_data
@@ -91,14 +75,33 @@ typedef struct s_mlx_data
 	void	*win_ptr;
 }	t_mlx_data;
 
-//transformations
+void	draw_line(t_v point, t_v end, t_mlx_data mlx_data);
+t_mlx_data	init_mlx();
+//display
+# ifndef PIX_PER_SIDE
+#  define PIX_PER_SIDE 1200
+# endif
+# ifndef FRACTION_OF_SCREEN
+#  define FRACTION_OF_SCREEN 0.75
+# endif
+# ifndef COLOR
+#  define COLOR 244 << 8
+# endif
 # ifndef DEG2RAD
 #  define DEG2RAD 0.0174533
 # endif
 # ifndef STARTING_ROTX
-#  define STARTING_ROTX 45
+#  define STARTING_ROTX -45.0
 # endif
 # ifndef STARTING_ROTY
-#  define STARTING_ROTY 45
+#  define STARTING_ROTY 80.0
 # endif
 #endif
+//sp = screen_points
+typedef struct s_display_data
+{
+	t_v	cam_rot;
+	t_v	**sp;
+}	t_display_data;
+void	draw_wf(t_wf wf, t_v cam_rot, t_v **screen_points, t_mlx_data mlx_data);
+

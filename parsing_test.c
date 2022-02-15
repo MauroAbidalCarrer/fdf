@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/13 00:01:54 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/14 19:56:02 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/14 20:16:13 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_wf	parse_file(char *pathname)
 	fill_wf(wf, pathname);
 	return (wf);
 }
-
+/*
 int	main(int ac, char **av)
 {
 	t_wf wf;
@@ -93,3 +93,4 @@ int	main(int ac, char **av)
 	if (wf.heights)
 		free_tab((void **)wf.heights, wf.width - 1);
 }
+*/
