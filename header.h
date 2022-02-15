@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 17:33:10 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/15 19:00:32 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/15 21:37:46 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include<stdio.h>
 
+#include <math.h>
 #include<stdlib.h>
 # include "mlx.h"
 # include <fcntl.h>
@@ -85,7 +86,6 @@ typedef struct s_mlx_data
 	void	*win;
 }	t_mlx_data;
 
-void	draw_line(t_v point, t_v end, t_mlx_data mlx_data);
 t_mlx_data	init_mlx();
 //display
 # ifndef PIX_PER_SIDE
@@ -106,6 +106,12 @@ t_mlx_data	init_mlx();
 # ifndef STARTING_ROTY
 #  define STARTING_ROTY 80.0
 # endif
+# ifndef ISO_MODE
+#  define ISO_MODE 0
+# endif
+# ifndef PER_MODE
+#  define PER_MODE 0
+# endif
 #endif
 //sp = screen_points
 typedef struct s_display_data
@@ -113,9 +119,20 @@ typedef struct s_display_data
 	t_v	cam_rot;
 	t_v	**sp;
 	double zoom;
-	int	is_processing;
+	char is_processing;
+	char display_mode;
 }	t_display_data;
+typedef struct s_matrix
+{
+	t_v	i;
+	t_v	j;
+	t_v	k;
+}	t_matrix;
 
+void	apply_isometric_matrix(t_wf wf, t_matrix matrix, t_v **sp);
+void	mk_isometric_matrix(t_wf wf, t_display_data display, t_matrix *matrix);
+//t_matrix	mk_matrix(t_v angles);
+void	draw_line(t_v point, t_v end, t_mlx_data mlx_data);
 //all
 typedef struct s_all_data
 {

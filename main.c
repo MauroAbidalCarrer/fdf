@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 20:16:38 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/15 19:09:55 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/15 21:34:08 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	free_all(t_all_data *data)
 {
-	free_tab(data->wf->heights, data->wf->width);
-	free_tab(data->display->sp, data->wf->width);
+	free_tab((void **)data->wf->heights, data->wf->width);
+	free_tab((void **)data->display->sp, data->wf->width);
 	free(data->mlx->mlx);
 }
 
@@ -37,7 +37,6 @@ int	on_keyboard_pressed(int keycode, t_all_data *data)
 		{
 			rot_offset = mul_d(rot_offset, 4);
 			data->display->cam_rot = sum(data->display->cam_rot, rot_offset);
-			mlx_clear_window(data->mlx->mlx, data->mlx->win);
 			draw_wf(data);
 		}
 		return (0);
@@ -60,7 +59,6 @@ int	on_mouse_move(int x, int y, t_all_data *data)
 	if (!first_call)
 	{
 		data->display->cam_rot = sum(data->display->cam_rot, rot_offset);
-		mlx_clear_window(data->mlx->mlx, data->mlx->win);
 		draw_wf(data);
 	}
 	return (0);
@@ -72,11 +70,11 @@ int	on_keyboard_press(int keycode, t_all_data *data)
 			data->display->zoom *= 1.3;
 		else if (keycode == 1)
 			data->display->zoom /= 1.3;
-		mlx_clear_window(data->mlx->mlx, data->mlx->win);
 		draw_wf(data);
 		return (0);
 }
 
+//TAKE CARE OF FLOATING POINTS IN FILE!!!!!!!!!!!!!!!!!!!!!!!!!!------------------------------------------------
 //sp = screen points
 int	main(int ac, char **av)
 {
@@ -102,6 +100,7 @@ int	main(int ac, char **av)
 	display.cam_rot.z = 0;
 	display.zoom = 1;
 	display.is_processing = 0;
+	display.display_mode = ISO_MODE;
 /*
 printf("cam_rot = ");print_v3(cam_rot);
 printf("\nforward = ");print_v3(angles_to_vector(cam_rot));

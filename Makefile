@@ -6,7 +6,7 @@
 #    By: maabidal <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/29 20:08:50 by maabidal          #+#    #+#              #
-#    Updated: 2022/02/14 20:33:36 by maabidal         ###   ########.fr        #
+#    Updated: 2022/02/15 21:09:08 by maabidal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,10 @@ INC = header.h
 SRCS += parsing_test.c
 SRCS += vector_utils2.c
 SRCS += vector_utils.c
-SRCS += isometric_transformation.c
+#SRCS += isometric_transformation.c
 SRCS += mlx_utils.c
+SRCS += display.c
+SRCS += matrices.c
 
 SRCS += main.c
 
