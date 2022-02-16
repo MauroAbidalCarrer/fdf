@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/13 00:01:54 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/14 19:55:42 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/16 04:28:46 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,3 +43,41 @@ void	**alloc_tab(size_t element_size, int x, int y)
 	}
 	return (ptr);
 }
+
+/*
+void	foreach_in_tab(void **tab, int *sizes,  t_tab_func func, void *fix_data)
+{
+	int	x;
+	int	y;
+
+	x = 0;
+	while (x < sizes[0])
+	{
+		y = 0;
+		while (y < sizes[1])
+		{
+			(*func)(tab[x][y], x, y, fix_data);
+			y++;
+		}
+		x++;
+	}
+}
+
+void	map_tabs(void **intpur, int *sizes,  t_map_tab_func func, void **output)
+{
+	int	x;
+	int	y;
+
+	x = 0;
+	while (x < sizes[0])
+	{
+		y = 0;
+		while (y < sizes[1])
+		{
+			output[x][y] = (*func)(tab[x][y]);
+			y++;
+		}
+		x++;
+	}
+}
+*/

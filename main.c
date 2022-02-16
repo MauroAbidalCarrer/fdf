@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 20:16:38 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/15 21:34:08 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/16 04:31:25 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	free_all(t_all_data *data)
 {
-	free_tab((void **)data->wf->heights, data->wf->width);
-	free_tab((void **)data->display->sp, data->wf->width);
+	free_tab((void **)data->wf->vertices, data->wf->sizes[0] - 1);
+	free_tab((void **)data->display->sp, data->wf->sizes[0] - 1);
 	free(data->mlx->mlx);
 }
 
@@ -29,14 +29,9 @@ int	on_keyboard_pressed(int keycode, t_all_data *data)
 			free_all(data);
 			exit(0);
 		}
-		rot_offset.x += (double)(keycode == KEY_UP_M);
-		rot_offset.x -= (double)(keycode == KEY_DOWN_M);
-		rot_offset.y += (double)(keycode == KEY_LEFT_M);
-		rot_offset.y -= (double)(keycode == KEY_RIGHT_M);
-		if (rot_offset.x || rot_offset.y)
+		if (keycode == 35)
 		{
-			rot_offset = mul_d(rot_offset, 4);
-			data->display->cam_rot = sum(data->display->cam_rot, rot_offset);
+			data->display->display_mode = !data->display->display_mode;
 			draw_wf(data);
 		}
 		return (0);
@@ -55,7 +50,6 @@ int	on_mouse_move(int x, int y, t_all_data *data)
 	last_x = x;
 	last_y = y;
 	rot_offset.z = 0;
-	//rot_offset = div_d(rot_offset, 10);
 	if (!first_call)
 	{
 		data->display->cam_rot = sum(data->display->cam_rot, rot_offset);
@@ -87,10 +81,10 @@ int	main(int ac, char **av)
 		return (1);
 	wf = parse_file(av[1]);
 	mlx = init_mlx();
-	display.sp = (t_v **)alloc_tab(sizeof(t_v), wf.width, wf.length);
+	display.sp = (t_v **)alloc_tab(sizeof(t_v), wf.sizes[0], wf.sizes[1]);
 	if (display.sp == NULL)
 	{
-		free_tab((void **)wf.heights, wf.width - 1);
+		free_tab((void **)wf.vertices, wf.sizes[0] - 1);
 		//mlx close?
 		return (1);
 	}
@@ -99,8 +93,7 @@ int	main(int ac, char **av)
 	display.cam_rot.y = 45.0;
 	display.cam_rot.z = 0;
 	display.zoom = 1;
-	display.is_processing = 0;
-	display.display_mode = ISO_MODE;
+	display.display_mode = PER_MODE;
 /*
 printf("cam_rot = ");print_v3(cam_rot);
 printf("\nforward = ");print_v3(angles_to_vector(cam_rot));

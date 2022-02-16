@@ -6,14 +6,14 @@
 #    By: maabidal <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/29 20:08:50 by maabidal          #+#    #+#              #
-#    Updated: 2022/02/15 21:09:08 by maabidal         ###   ########.fr        #
+#    Updated: 2022/02/16 04:28:06 by maabidal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 INC = header.h
 
-SRCS += parsing_test.c
+SRCS += parsing.c
 SRCS += vector_utils2.c
 SRCS += vector_utils.c
 #SRCS += isometric_transformation.c
@@ -26,7 +26,7 @@ SRCS += main.c
 OBJS_DIR = obj/
 OBJS = $(addprefix $(OBJS_DIR),$(SRCS:.c=.o))
 
-CC = gcc -g3 -fsanitize=address#-Wall -Wextra -Werror
+CC = gcc #-Wall -Wextra -Werror
 
 MLX_DIR = ./mlx
 MLX_LNK	= -L $(MLX_DIR) -l mlx -framework OpenGL -framework AppKit

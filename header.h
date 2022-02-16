@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 17:33:10 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/15 21:37:46 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/16 02:59:53 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 
 #include<stdio.h>
 
-#include <math.h>
-#include<stdlib.h>
+# include <math.h>
+# include <stdlib.h>
 # include "mlx.h"
 # include <fcntl.h>
 # include "libft.h"
-# include <math.h>
 # ifndef CREAT_F
 #  define CRAET_F O_WRONLY | O_CREAT | O_TRUNC
 # endif
@@ -62,10 +61,10 @@ double	dot(t_v a, t_v b);
 //wireframe
 typedef struct s_wf
 {
-	double	**heights;
-	int	width;
-	int	length;
-	double	max_height;
+	t_v	**vertices;;
+	int	sizes[2];
+	double	max_iso_magnitude;
+	double	max_per_magnitude;
 }	t_wf;
 t_wf	parse_file(char *pathname);
 
@@ -91,6 +90,9 @@ t_mlx_data	init_mlx();
 # ifndef PIX_PER_SIDE
 #  define PIX_PER_SIDE 1200
 # endif
+# ifndef HALF_PIX_PIX_PER_SIDE
+#  define HALF_PIX_PIX_PER_SIDE 600.0
+# endif
 # ifndef FRACTION_OF_SCREEN
 #  define FRACTION_OF_SCREEN 0.75
 # endif
@@ -110,18 +112,21 @@ t_mlx_data	init_mlx();
 #  define ISO_MODE 0
 # endif
 # ifndef PER_MODE
-#  define PER_MODE 0
+#  define PER_MODE 1
 # endif
-#endif
+# ifndef NEAR_PLANE
+#  define NEAR_PLANE 1
+# endif
 //sp = screen_points
 typedef struct s_display_data
 {
 	t_v	cam_rot;
 	t_v	**sp;
 	double zoom;
-	char is_processing;
 	char display_mode;
+	double distance;
 }	t_display_data;
+
 typedef struct s_matrix
 {
 	t_v	i;
@@ -131,6 +136,7 @@ typedef struct s_matrix
 
 void	apply_isometric_matrix(t_wf wf, t_matrix matrix, t_v **sp);
 void	mk_isometric_matrix(t_wf wf, t_display_data display, t_matrix *matrix);
+void	mk_perspective_matrix(t_display_data display, t_matrix *matrix);
 //t_matrix	mk_matrix(t_v angles);
 void	draw_line(t_v point, t_v end, t_mlx_data mlx_data);
 //all
@@ -142,3 +148,4 @@ typedef struct s_all_data
 }	t_all_data;
 
 void	draw_wf(t_all_data *data);
+#endif
