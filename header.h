@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 17:33:10 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/16 02:59:53 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 17:07:42 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,9 @@ t_mlx_data	init_mlx();
 # endif
 # ifndef PER_MODE
 #  define PER_MODE 1
+# endif
+# ifndef NEAR_PER_PLANE
+#  define NEAR_PER_PLANE 0.1
 # endif
 # ifndef NEAR_PLANE
 #  define NEAR_PLANE 1

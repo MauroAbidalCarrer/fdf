@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 19:17:14 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/16 03:59:08 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 17:16:12 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,9 @@ void	apply_isometric_transformation(t_wf wf, t_matrix matrix, t_v **sp)
 		{
 			sp[x][y].x = dot(matrix.i, wf.vertices[x][y]);
 			sp[x][y].y = dot(matrix.j, wf.vertices[x][y]);
-			sp[x][y].z = dot(matrix.k, wf.vertices[x][y]);
 		}
 	}
 }
-
-#include <time.h>
 
 void	apply_perspective_transformation(t_wf wf, t_matrix matrix, t_display_data display)
 {
@@ -57,12 +54,10 @@ void	apply_perspective_transformation(t_wf wf, t_matrix matrix, t_display_data d
 	int		y;
 	double calibration;
 	t_v		point;
+	double	offset;
 
-
-/* here, do your time-consuming job */
-
-	calibration = (NEAR_PLANE / wf.max_per_magnitude) * PIX_PER_SIDE;
-	//printf("wf.max_per_magnitude = %f\n", wf.max_iso_magnitude);
+	offset = wf.max_iso_magnitude + NEAR_PER_PLANE + 1;
+	calibration = PIX_PER_SIDE;
 	x = -1;
 	while (++x < wf.sizes[0])
 	{
@@ -74,9 +69,10 @@ void	apply_perspective_transformation(t_wf wf, t_matrix matrix, t_display_data d
 			point = sum(point, mul_d(matrix.j, wf.vertices[x][y].y));
 			point = sum(point, mul_d(matrix.k, wf.vertices[x][y].z));
 			point.x = -point.x;
-			point.z += 1.0 / display.zoom + wf.max_iso_magnitude;//wf.max_per_magnitude;
-			point = normalized(point);
-			point = mul_d(point, calibration);
+			point.z += offset;
+			point = div_d(point, point.z);
+			point = div_d(point, wf.max_per_magnitude);
+			point = mul_d(point, NEAR_PER_PLANE * HALF_PIX_PIX_PER_SIDE * display.zoom);
 			display.sp[x][y] = point;
 		}
 	}
@@ -87,7 +83,6 @@ void	draw_wf(t_all_data *data)
 	t_matrix	matrix;
 
 	mlx_clear_window(data->mlx->mlx, data->mlx->win);
-clock_t begin = clock();
 	if (data->display->display_mode == ISO_MODE)
 	{
 		mk_isometric_matrix(*data->wf, *data->display, &matrix);
@@ -97,13 +92,6 @@ clock_t begin = clock();
 	{
 		mk_perspective_matrix(*data->display, &matrix);
 		apply_perspective_transformation(*data->wf, matrix, *data->display);
-clock_t end = clock();
-double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-//printf("time taken to apply the transformation= %f\n", time_spent);
 	}
-begin = clock();
 	draw_segments(data->display->sp,  *data->wf, *data->mlx);
-clock_t end = clock();
-double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-//printf("time taken to draw the segments = %f\n", time_spent);
 }

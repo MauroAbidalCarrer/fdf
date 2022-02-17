@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/13 00:01:54 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/16 00:57:42 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 17:05:06 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,7 @@ t_wf	set_vertex(t_wf wf, int x, int y, char *str_height)
 	if (value > wf.max_iso_magnitude)
 	{
 		wf.max_iso_magnitude = value;
-		point = new_v(value, value, 0);
-		point = normalized(point);
-		point = mul_d(point, NEAR_PLANE);
-		wf.max_per_magnitude = magnitude(point);
+		wf.max_per_magnitude = value * NEAR_PER_PLANE;
 	}
 	return (wf);
 }
@@ -97,23 +94,5 @@ t_wf	parse_file(char *pathname)
 	if (wf.vertices == NULL)
 		exit(1);
 	wf = fill_wf(wf, pathname);
-//printf("max height = %f\n", wf.max_height);
 	return (wf);
 }
-/*
-int	main(int ac, char **av)
-{
-	t_wf wf;
-
-	wf = parse_file(av[1]);
-
-	for (int i = 0; i < wf.sizes[1]; i++)
-	{
-		for (int j = 0; j < wf.sizes[0]; j++)
-			printf("%f ", wf.heights[j][i]);
-		printf("\n");
-	}
-	if (wf.heights)
-		free_tab((void **)wf.heights, wf.sizes[0] - 1);
-}
-*/
