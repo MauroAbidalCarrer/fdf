@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 21:02:04 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/16 02:52:52 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 17:25:09 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	mk_isometric_matrix(t_wf wf, t_display_data display, t_matrix *matrix)
 	double	calibration;
 
 	*matrix = mk_rotation_matrix(display.cam_rot);
-	calibration = (double)PIX_PER_SIDE / 2.0;
+	calibration = HALF_PIX_PIX_PER_SIDE;
 	calibration /= wf.max_iso_magnitude;
 	calibration *= display.zoom;
 	matrix->j = mul_d(matrix->j, calibration);

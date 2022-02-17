@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 17:33:10 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/17 17:07:42 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 20:03:24 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 #  define Z 2
 # endif
 
+int	i_lerp(int a, int b, double t);
+
 //vector
 typedef struct s_v
 {
@@ -57,7 +59,7 @@ void	print_v2(t_v v);
 void	print_v3(t_v v);
 t_v	angles_to_vector(t_v angles);
 double	dot(t_v a, t_v b);
-
+t_v	lerp_v(t_v a, t_v b, double t);
 //wireframe
 typedef struct s_wf
 {
@@ -65,6 +67,7 @@ typedef struct s_wf
 	int	sizes[2];
 	double	max_iso_magnitude;
 	double	max_per_magnitude;
+	double	max_height;
 }	t_wf;
 t_wf	parse_file(char *pathname);
 
@@ -84,6 +87,11 @@ typedef struct s_mlx_data
 	void	*mlx;
 	void	*win;
 }	t_mlx_data;
+typedef struct s_point_n_col
+{
+	t_v	point;
+	t_v	col;
+}	t_point_n_col;
 
 t_mlx_data	init_mlx();
 //display
@@ -120,6 +128,12 @@ t_mlx_data	init_mlx();
 # ifndef NEAR_PLANE
 #  define NEAR_PLANE 1
 # endif
+# ifndef LOW_COLOR
+#  define LOW_COLOR 0x0000ff00
+# endif
+# ifndef HIGH_COLOR
+#  define HIGH_COLOR 0x000000ff
+# endif
 //sp = screen_points
 typedef struct s_display_data
 {
@@ -128,6 +142,8 @@ typedef struct s_display_data
 	double zoom;
 	char display_mode;
 	double distance;
+	t_v low_col;
+	t_v high_col;
 }	t_display_data;
 
 typedef struct s_matrix
@@ -141,7 +157,7 @@ void	apply_isometric_matrix(t_wf wf, t_matrix matrix, t_v **sp);
 void	mk_isometric_matrix(t_wf wf, t_display_data display, t_matrix *matrix);
 void	mk_perspective_matrix(t_display_data display, t_matrix *matrix);
 //t_matrix	mk_matrix(t_v angles);
-void	draw_line(t_v point, t_v end, t_mlx_data mlx_data);
+void    draw_line(t_point_n_col point, t_point_n_col end, t_mlx_data mlx_data);
 //all
 typedef struct s_all_data
 {

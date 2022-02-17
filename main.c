@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 20:16:38 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/16 04:31:25 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 21:23:12 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,16 @@ int	on_keyboard_press(int keycode, t_all_data *data)
 		return (0);
 }
 
+t_v	conv_int_col(int color)
+{
+	t_v	col;
+
+	col.x = (double)((color>> 8) & 255);
+	col.y = (double)((color >> 4) & 255);
+	col.z = (double)(color & 255);
+	return (col);
+}
+
 //TAKE CARE OF FLOATING POINTS IN FILE!!!!!!!!!!!!!!!!!!!!!!!!!!------------------------------------------------
 //sp = screen points
 int	main(int ac, char **av)
@@ -80,34 +90,25 @@ int	main(int ac, char **av)
 	if (ac != 2)
 		return (1);
 	wf = parse_file(av[1]);
-	mlx = init_mlx();
 	display.sp = (t_v **)alloc_tab(sizeof(t_v), wf.sizes[0], wf.sizes[1]);
 	if (display.sp == NULL)
-	{
-		free_tab((void **)wf.vertices, wf.sizes[0] - 1);
-		//mlx close?
-		return (1);
-	}
-//	display.cam_rot;// = new_v(STARTING_ROTX,  STARTING_ROTY + 90.0, 0);
+		return (free_tab((void **)wf.vertices, wf.sizes[0] - 1), 1);
+	mlx = init_mlx();
 	display.cam_rot.x = 50.0;
 	display.cam_rot.y = 45.0;
 	display.cam_rot.z = 0;
 	display.zoom = 1;
 	display.display_mode = PER_MODE;
-/*
-printf("cam_rot = ");print_v3(cam_rot);
-printf("\nforward = ");print_v3(angles_to_vector(cam_rot));
-printf("\n");
-*/
+	display.low_col = conv_int_col(LOW_COLOR);
+	display.high_col = conv_int_col(HIGH_COLOR);
 
 	data.wf = &wf;
 	data.mlx = &mlx;
 	data.display = &display;
 
 	draw_wf(&data);
-mlx_key_hook(mlx.win, &on_keyboard_pressed, &data);//escape
-mlx_hook(mlx.win, 6, 1L<<6, &on_mouse_move, &data);//mouse
-mlx_hook(mlx.win, 2, 1L<<0, &on_keyboard_press, &data);//zoom
-//mlx_mouse_hook(mlx.win, &on_mouse_button, &data);
+	mlx_key_hook(mlx.win, &on_keyboard_pressed, &data);//escape
+	mlx_hook(mlx.win, 6, 1<<6, &on_mouse_move, &data);//mouse
+	mlx_hook(mlx.win, 2, 1, &on_keyboard_press, &data);//zoom
 	mlx_loop(mlx.mlx);
 }

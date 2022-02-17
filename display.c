@@ -6,16 +6,27 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 19:17:14 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/17 17:16:12 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 21:13:28 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	draw_segments(t_v **sp, t_wf  wf, t_mlx_data mlx_data)
+t_point_n_col	get_pnc(t_v sp, double height, t_display_data display)
+{
+	t_point_n_col	pnc;
+
+	pnc.point = sp;
+	pnc.col = lerp_v(display.low_col, display.high_col, height);
+	return (pnc);
+}
+
+void	draw_segments(t_display_data display, t_wf  wf, t_mlx_data mlx_data)
 {
 	int	x;
 	int	y;
+	t_point_n_col	start;
+	t_point_n_col	end;
 
 	x = -1;
 	while (++x < wf.sizes[X])
@@ -24,9 +35,17 @@ void	draw_segments(t_v **sp, t_wf  wf, t_mlx_data mlx_data)
 		while (++y < wf.sizes[Y])
 		{
 			if (x < wf.sizes[0] - 1)
-				draw_line(sp[x][y], sp[x + 1][y], mlx_data);
+			{
+				start = get_pnc(display.sp[x][y], wf.vertices[x][y].y / wf.max_height, display);
+				end = get_pnc(display.sp[x + 1][y], wf.vertices[x + 1][y].y / wf.max_height, display);
+				draw_line(start, end, mlx_data);
+			}
 			if (y < wf.sizes[1] - 1)
-				draw_line(sp[x][y], sp[x][y + 1], mlx_data);
+			{
+				start = get_pnc(display.sp[x][y], wf.vertices[x][y].y / wf.max_height, display);
+				end = get_pnc(display.sp[x][y + 1], wf.vertices[x][y + 1].y / wf.max_height, display);
+				draw_line(start, end, mlx_data);
+			}
 		}
 	}
 }
@@ -44,6 +63,7 @@ void	apply_isometric_transformation(t_wf wf, t_matrix matrix, t_v **sp)
 		{
 			sp[x][y].x = dot(matrix.i, wf.vertices[x][y]);
 			sp[x][y].y = dot(matrix.j, wf.vertices[x][y]);
+			sp[x][y].z = 0;
 		}
 	}
 }
@@ -52,7 +72,7 @@ void	apply_perspective_transformation(t_wf wf, t_matrix matrix, t_display_data d
 {
 	int		x;
 	int		y;
-	double calibration;
+	double	calibration;
 	t_v		point;
 	double	offset;
 
@@ -93,5 +113,5 @@ void	draw_wf(t_all_data *data)
 		mk_perspective_matrix(*data->display, &matrix);
 		apply_perspective_transformation(*data->wf, matrix, *data->display);
 	}
-	draw_segments(data->display->sp,  *data->wf, *data->mlx);
+	draw_segments(*data->display,  *data->wf, *data->mlx);
 }

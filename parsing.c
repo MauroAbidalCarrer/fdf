@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/13 00:01:54 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/17 17:05:06 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 21:33:30 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_wf	init_dimensions(char *pathname)
 	char 	**c_heights;
 
 	fd = open(pathname, O_RDONLY);
+	if (fd == -1)
+		exit(1);
 	line = get_next_line(fd);
 	clear_mem(&wf, sizeof(t_wf));
 	c_heights = ft_split(line, ' ');
@@ -32,7 +34,8 @@ t_wf	init_dimensions(char *pathname)
 		free(line);
 		line = get_next_line(fd);
 	}
-	//free(line);?
+	if (close(fd) == -1)
+		exit(1);
 	return (wf);
 }
 
@@ -46,6 +49,8 @@ t_wf	set_vertex(t_wf wf, int x, int y, char *str_height)
 	point.y = value;
 	point.z = (double)(y - wf.sizes[Y] / 2);
 	wf.vertices[x][y] = point;
+	if (value > wf.max_height)
+		wf.max_height = value;
 	value = magnitude(point);
 	if (value > wf.max_iso_magnitude)
 	{
