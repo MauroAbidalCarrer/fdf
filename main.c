@@ -6,40 +6,33 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 20:16:38 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/17 21:23:12 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 22:54:47 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	free_all(t_all_data *data)
-{
-	free_tab((void **)data->wf->vertices, data->wf->sizes[0] - 1);
-	free_tab((void **)data->display->sp, data->wf->sizes[0] - 1);
-	free(data->mlx->mlx);
-}
-
 int	on_keyboard_pressed(int keycode, t_all_data *data)
 {
-		t_v	rot_offset;
-
-		if (keycode == KEY_ESC_M)
-		{
-			mlx_destroy_window(data->mlx->mlx, data->mlx->win);
-			free_all(data);
-			exit(0);
-		}
-		if (keycode == 35)
-		{
-			data->display->display_mode = !data->display->display_mode;
-			draw_wf(data);
-		}
-		return (0);
+	if (keycode == KEY_ESC_M)
+	{
+		mlx_destroy_window(data->mlx->mlx, data->mlx->win);
+		free_tab((void **)data->wf->vertices, data->wf->sizes[0] - 1);
+		free_tab((void **)data->display->sp, data->wf->sizes[0] - 1);
+		free(data->mlx->mlx);
+		exit(0);
+	}
+	if (keycode == 35)
+	{
+		data->display->display_mode = !data->display->display_mode;
+		draw_wf(data);
+	}
+	return (0);
 }
 
 int	on_mouse_move(int x, int y, t_all_data *data)
 {
-	t_v	rot_offset;
+	t_v			rot_offset;
 	static int	last_x;
 	static int	last_y;
 	int			first_call;
@@ -60,26 +53,14 @@ int	on_mouse_move(int x, int y, t_all_data *data)
 
 int	on_keyboard_press(int keycode, t_all_data *data)
 {
-		if (keycode == 13)
-			data->display->zoom *= 1.3;
-		else if (keycode == 1)
-			data->display->zoom /= 1.3;
-		draw_wf(data);
-		return (0);
+	if (keycode == 13)
+		data->display->zoom *= 1.3;
+	else if (keycode == 1)
+		data->display->zoom /= 1.3;
+	draw_wf(data);
+	return (0);
 }
 
-t_v	conv_int_col(int color)
-{
-	t_v	col;
-
-	col.x = (double)((color>> 8) & 255);
-	col.y = (double)((color >> 4) & 255);
-	col.z = (double)(color & 255);
-	return (col);
-}
-
-//TAKE CARE OF FLOATING POINTS IN FILE!!!!!!!!!!!!!!!!!!!!!!!!!!------------------------------------------------
-//sp = screen points
 int	main(int ac, char **av)
 {
 	t_wf			wf;
@@ -94,21 +75,16 @@ int	main(int ac, char **av)
 	if (display.sp == NULL)
 		return (free_tab((void **)wf.vertices, wf.sizes[0] - 1), 1);
 	mlx = init_mlx();
-	display.cam_rot.x = 50.0;
-	display.cam_rot.y = 45.0;
-	display.cam_rot.z = 0;
-	display.zoom = 1;
-	display.display_mode = PER_MODE;
-	display.low_col = conv_int_col(LOW_COLOR);
-	display.high_col = conv_int_col(HIGH_COLOR);
-
+	display = init_display(display);
 	data.wf = &wf;
 	data.mlx = &mlx;
 	data.display = &display;
-
 	draw_wf(&data);
-	mlx_key_hook(mlx.win, &on_keyboard_pressed, &data);//escape
-	mlx_hook(mlx.win, 6, 1<<6, &on_mouse_move, &data);//mouse
-	mlx_hook(mlx.win, 2, 1, &on_keyboard_press, &data);//zoom
+	mlx_key_hook(mlx.win, &on_keyboard_pressed, &data);
+	if (BONUS)
+	{
+		mlx_hook(mlx.win, 6, 1 << 6, &on_mouse_move, &data);
+		mlx_hook(mlx.win, 2, 1, &on_keyboard_press, &data);
+	}
 	mlx_loop(mlx.mlx);
 }

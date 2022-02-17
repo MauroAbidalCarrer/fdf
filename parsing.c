@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/13 00:01:54 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/17 21:33:30 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 22:52:34 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 t_wf	init_dimensions(char *pathname)
 {
 	t_wf	wf;
-	int	fd;
+	int		fd;
 	char	*line;
-	char 	**c_heights;
+	char	**c_heights;
 
 	fd = open(pathname, O_RDONLY);
 	if (fd == -1)
@@ -42,7 +42,7 @@ t_wf	init_dimensions(char *pathname)
 t_wf	set_vertex(t_wf wf, int x, int y, char *str_height)
 {
 	double	value;
-	t_v	point;
+	t_v		point;
 
 	value = ft_atof(str_height) / 10.0;
 	point.x = -(double)(x - wf.sizes[X] / 2);
@@ -60,30 +60,43 @@ t_wf	set_vertex(t_wf wf, int x, int y, char *str_height)
 	return (wf);
 }
 
+t_wf	fill_row(t_wf wf, int y, char *line)
+{
+	char	**c_heights;
+	int		x;
+
+	c_heights = ft_split(line, ' ');
+	if (c_heights == NULL)
+	{
+		free_tab((void **)wf.vertices, wf.sizes[0]);
+		free(line);
+		exit(1);
+	}
+	x = -1;
+	while (++x < wf.sizes[0])
+		wf = set_vertex(wf, x, y, c_heights[x]);
+	free_tab((void **)c_heights, wf.sizes[0]);
+	free(line);
+	return (wf);
+}
+
 t_wf	fill_wf(t_wf wf, char *pathname)
 {
-	int	fd;
+	int		fd;
 	char	*line;
-	char 	**c_heights;
-	int	point[2];
+	int		point[2];
 
 	fd = open(pathname, O_RDONLY);
+	if (fd == -1)
+	{
+		free_tab((void **)wf.vertices, wf.sizes[0]);
+		exit(1);
+	}
 	line = get_next_line(fd);
 	point[Y] = 0;
 	while (line)
 	{
-		c_heights = ft_split(line, ' ');
-		if (c_heights == NULL)
-		{
-			free_tab((void **)wf.vertices, wf.sizes[0]);
-			free(line);
-			exit(1);
-		}
-		point[X] = -1;
-		while (++point[X] < wf.sizes[0])
-			wf = set_vertex(wf, point[X], point[Y], c_heights[point[X]]);
-		free_tab((void **)c_heights, wf.sizes[0]);
-		free(line);
+		wf = fill_row(wf, point[Y], line);
 		line = get_next_line(fd);
 		point[Y]++;
 	}

@@ -6,7 +6,7 @@
 #    By: maabidal <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/29 20:08:50 by maabidal          #+#    #+#              #
-#    Updated: 2022/02/17 21:30:15 by maabidal         ###   ########.fr        #
+#    Updated: 2022/02/17 22:06:46 by maabidal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,17 +16,17 @@ INC = header.h
 SRCS += parsing.c
 SRCS += vector_utils2.c
 SRCS += vector_utils.c
-#SRCS += isometric_transformation.c
 SRCS += mlx_utils.c
 SRCS += display.c
 SRCS += matrices.c
+SRCS += utils.c
 
 SRCS += main.c
 
 OBJS_DIR = obj/
 OBJS = $(addprefix $(OBJS_DIR),$(SRCS:.c=.o))
 
-CC = gcc -g3 -fsanitize=address#-Wall -Wextra -Werror
+CC = gcc -Wall -Wextra -Werror
 
 MLX_DIR = ./mlx
 MLX_LNK	= -L $(MLX_DIR) -l mlx -framework OpenGL -framework AppKit

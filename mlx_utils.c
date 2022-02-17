@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:38:56 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/17 21:13:09 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 22:54:36 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,11 @@ void	put_pixel(t_v point, t_mlx_data mlx_data, t_v color)
 	mlx_pixel_put(mlx_data.mlx, mlx_data.win, x, y, vec_to_color(color));
 }
 
-double	lerp(double a, double b, double t)
-{
-	return (a + (b - a) * t);
-}
-
 t_v	lerp_v(t_v a, t_v b, double t)
 {
-	a.x = lerp(a.x, b.x, t); 
-	a.y = lerp(a.y, b.y, t); 
+	a.x = (a.x + (b.x - a.x) * t);
+	a.y = (a.y + (b.y - a.y) * t);
+	a.z = (a.z + (b.z - a.z) * t);
 	return (a);
 }
 
@@ -50,22 +46,25 @@ void	draw_line(t_point_n_col point, t_point_n_col end, t_mlx_data mlx_data)
 {
 	double	nb_steps;
 	double	i;
-	t_v	color;
+	t_v		color;
+	t_v		c_point;
 
-	nb_steps = fmax(fabs(end.point.x - point.point.x), fabs(end.point.y - point.point.y));
+	nb_steps = fabs(end.point.x - point.point.x);
+	nb_steps = fmax(nb_steps, fabs(end.point.y - point.point.y));
 	put_pixel(point.point, mlx_data, point.col);
 	i = 1;
 	while (i < nb_steps)
 	{
 		color = lerp_v(point.col, end.col, i / nb_steps);
-		put_pixel(lerp_v(point.point, end.point, i / nb_steps), mlx_data, color);
+		c_point = lerp_v(point.point, end.point, i / nb_steps);
+		put_pixel(c_point, mlx_data, color);
 		i += 1;
 	}
 }
 
-t_mlx_data	init_mlx()
+t_mlx_data	init_mlx(void)
 {
-	t_mlx_data data;
+	t_mlx_data	data;
 
 	data.mlx = mlx_init();
 	data.win = mlx_new_window(data.mlx, PIX_PER_SIDE, PIX_PER_SIDE, "fdf");

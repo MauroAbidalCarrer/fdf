@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 21:02:04 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/17 17:25:09 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 22:48:58 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_v	angles_to_vector(t_v angles)
 {
 	t_v	horizontal;
 
-	angles =  mul_d(angles, DEG2RAD);
+	angles = mul_d(angles, DEG2RAD);
 	horizontal = new_v(cos(angles.y), sin(angles.y), 0);
 	horizontal = mul_d(horizontal, cos(angles.x));
 	return (new_v(horizontal.x, sin(angles.x), horizontal.y));
@@ -24,10 +24,9 @@ t_v	angles_to_vector(t_v angles)
 
 t_matrix	mk_rotation_matrix(t_v angles)
 {
-	t_v	cam_rot;
-	t_matrix matrix;
-	t_v	angles_upward;
-	t_v	angles_sideway;
+	t_matrix	matrix;
+	t_v			angles_upward;
+	t_v			angles_sideway;
 
 	angles_upward.x = 90.0 + angles.x;
 	angles_upward.y = angles.y;

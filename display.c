@@ -6,25 +6,26 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 19:17:14 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/17 21:13:28 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 22:38:53 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-t_point_n_col	get_pnc(t_v sp, double height, t_display_data display)
+t_point_n_col	get_pnc(t_v sp, double height, t_display_data display, t_wf wf)
 {
 	t_point_n_col	pnc;
 
+	height /= wf.max_height;
 	pnc.point = sp;
 	pnc.col = lerp_v(display.low_col, display.high_col, height);
 	return (pnc);
 }
 
-void	draw_segments(t_display_data display, t_wf  wf, t_mlx_data mlx_data)
+void	draw_segments(t_display_data d, t_wf wf, t_mlx_data mlx_data)
 {
-	int	x;
-	int	y;
+	int				x;
+	int				y;
 	t_point_n_col	start;
 	t_point_n_col	end;
 
@@ -36,14 +37,14 @@ void	draw_segments(t_display_data display, t_wf  wf, t_mlx_data mlx_data)
 		{
 			if (x < wf.sizes[0] - 1)
 			{
-				start = get_pnc(display.sp[x][y], wf.vertices[x][y].y / wf.max_height, display);
-				end = get_pnc(display.sp[x + 1][y], wf.vertices[x + 1][y].y / wf.max_height, display);
+				start = get_pnc(d.sp[x][y], wf.vertices[x][y].y, d, wf);
+				end = get_pnc(d.sp[x + 1][y], wf.vertices[x + 1][y].y, d, wf);
 				draw_line(start, end, mlx_data);
 			}
 			if (y < wf.sizes[1] - 1)
 			{
-				start = get_pnc(display.sp[x][y], wf.vertices[x][y].y / wf.max_height, display);
-				end = get_pnc(display.sp[x][y + 1], wf.vertices[x][y + 1].y / wf.max_height, display);
+				start = get_pnc(d.sp[x][y], wf.vertices[x][y].y, d, wf);
+				end = get_pnc(d.sp[x][y + 1], wf.vertices[x][y + 1].y, d, wf);
 				draw_line(start, end, mlx_data);
 			}
 		}
@@ -68,16 +69,14 @@ void	apply_isometric_transformation(t_wf wf, t_matrix matrix, t_v **sp)
 	}
 }
 
-void	apply_perspective_transformation(t_wf wf, t_matrix matrix, t_display_data display)
+void	apply_perspective(t_wf wf, t_matrix matrix, t_display_data display)
 {
 	int		x;
 	int		y;
-	double	calibration;
 	t_v		point;
 	double	offset;
 
 	offset = wf.max_iso_magnitude + NEAR_PER_PLANE + 1;
-	calibration = PIX_PER_SIDE;
 	x = -1;
 	while (++x < wf.sizes[0])
 	{
@@ -92,7 +91,7 @@ void	apply_perspective_transformation(t_wf wf, t_matrix matrix, t_display_data d
 			point.z += offset;
 			point = div_d(point, point.z);
 			point = div_d(point, wf.max_per_magnitude);
-			point = mul_d(point, NEAR_PER_PLANE * HALF_PIX_PIX_PER_SIDE * display.zoom);
+			point = mul_d(point, NEAR_PER_PLANE * 600 * display.zoom);
 			display.sp[x][y] = point;
 		}
 	}
@@ -111,7 +110,7 @@ void	draw_wf(t_all_data *data)
 	else
 	{
 		mk_perspective_matrix(*data->display, &matrix);
-		apply_perspective_transformation(*data->wf, matrix, *data->display);
+		apply_perspective(*data->wf, matrix, *data->display);
 	}
-	draw_segments(*data->display,  *data->wf, *data->mlx);
+	draw_segments(*data->display, *data->wf, *data->mlx);
 }

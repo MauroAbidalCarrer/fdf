@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 17:33:10 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/17 20:03:24 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 22:43:46 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 # endif
 # ifndef Z
 #  define Z 2
+# endif
+# ifndef BONUS
+#  define BONUS 0
 # endif
 
 int	i_lerp(int a, int b, double t);
@@ -152,7 +155,7 @@ typedef struct s_matrix
 	t_v	j;
 	t_v	k;
 }	t_matrix;
-
+t_display_data	init_display(t_display_data display);
 void	apply_isometric_matrix(t_wf wf, t_matrix matrix, t_v **sp);
 void	mk_isometric_matrix(t_wf wf, t_display_data display, t_matrix *matrix);
 void	mk_perspective_matrix(t_display_data display, t_matrix *matrix);
