@@ -6,7 +6,7 @@
 #    By: maabidal <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/29 20:08:50 by maabidal          #+#    #+#              #
-#    Updated: 2022/02/17 22:06:46 by maabidal         ###   ########.fr        #
+#    Updated: 2022/02/19 22:16:09 by maabidal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,11 +20,14 @@ SRCS += mlx_utils.c
 SRCS += display.c
 SRCS += matrices.c
 SRCS += utils.c
+SRCS += hooks.c
 
 SRCS += main.c
 
 OBJS_DIR = obj/
+OBJS_DIR_BONUS = obj/
 OBJS = $(addprefix $(OBJS_DIR),$(SRCS:.c=.o))
+OBJS_BONUS = $(addprefix $(OBJS_DIR_BONUS), $(SRCS:.c=.o))
 
 CC = gcc -Wall -Wextra -Werror
 
@@ -41,8 +44,14 @@ all: $(NAME)
 $(NAME) :  $(MLX_LIB) $(OBJS) $(LFT_LIB)
 	$(CC) $(OBJS) $(MLX_LNK) $(LFT_LNK) -lm -o $(NAME)
 
+bonus :  $(MLX_LIB) $(OBJS_BONUS) $(LFT_LIB)
+	$(CC) $(OBJS_BONUS) $(MLX_LNK) $(LFT_LNK) -lm -o fdf_bonus
+
+$(OBJS_BONUS): $(OBJS_DIR_BONUS)%.o: %.c $(OBJS_DIR_BONUS)
+	$(CC) -D BONUS=1 -I $(MLX_DIR) -I $(LFT_DIR) -c $< -o $@
+
 $(OBJS): $(OBJS_DIR)%.o: %.c $(OBJS_DIR)
-	$(CC) -I $(MLX_DIR) -I $(LFT_DIR) -c $< -o $@
+	$(CC) -D BONUS=1  -I $(MLX_DIR) -I $(LFT_DIR) -c $< -o $@
 
 $(OBJS_DIR):
 	mkdir $@

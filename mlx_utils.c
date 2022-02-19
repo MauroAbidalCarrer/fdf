@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:38:56 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/17 22:54:36 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/17 23:08:38 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,4 @@ void	draw_line(t_point_n_col point, t_point_n_col end, t_mlx_data mlx_data)
 		put_pixel(c_point, mlx_data, color);
 		i += 1;
 	}
-}
-
-t_mlx_data	init_mlx(void)
-{
-	t_mlx_data	data;
-
-	data.mlx = mlx_init();
-	data.win = mlx_new_window(data.mlx, PIX_PER_SIDE, PIX_PER_SIDE, "fdf");
-	return (data);
 }

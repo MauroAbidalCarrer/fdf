@@ -6,59 +6,41 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 20:16:38 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/17 22:54:47 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/19 22:18:07 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-int	on_keyboard_pressed(int keycode, t_all_data *data)
+t_v	conv_int_col(int color)
 {
-	if (keycode == KEY_ESC_M)
-	{
-		mlx_destroy_window(data->mlx->mlx, data->mlx->win);
-		free_tab((void **)data->wf->vertices, data->wf->sizes[0] - 1);
-		free_tab((void **)data->display->sp, data->wf->sizes[0] - 1);
-		free(data->mlx->mlx);
-		exit(0);
-	}
-	if (keycode == 35)
-	{
-		data->display->display_mode = !data->display->display_mode;
-		draw_wf(data);
-	}
-	return (0);
+	t_v	col;
+
+	col.x = (double)((color >> 8) & 255);
+	col.y = (double)((color >> 4) & 255);
+	col.z = (double)(color & 255);
+	return (col);
 }
 
-int	on_mouse_move(int x, int y, t_all_data *data)
+t_mlx_data	init_mlx(void)
 {
-	t_v			rot_offset;
-	static int	last_x;
-	static int	last_y;
-	int			first_call;
+	t_mlx_data	data;
 
-	rot_offset.y = -(double)(last_x - x) / 10.0;
-	rot_offset.x = -(double)(last_y - y) / 7.0;
-	first_call = (last_x == 0 && last_y == 0);
-	last_x = x;
-	last_y = y;
-	rot_offset.z = 0;
-	if (!first_call)
-	{
-		data->display->cam_rot = sum(data->display->cam_rot, rot_offset);
-		draw_wf(data);
-	}
-	return (0);
+	data.mlx = mlx_init();
+	data.win = mlx_new_window(data.mlx, PIX_PER_SIDE, PIX_PER_SIDE, "fdf");
+	return (data);
 }
 
-int	on_keyboard_press(int keycode, t_all_data *data)
+t_display_data	init_display(t_display_data display)
 {
-	if (keycode == 13)
-		data->display->zoom *= 1.3;
-	else if (keycode == 1)
-		data->display->zoom /= 1.3;
-	draw_wf(data);
-	return (0);
+	display.cam_rot.x = 50.0;
+	display.cam_rot.y = 45.0;
+	display.cam_rot.z = 0;
+	display.zoom = 1;
+	display.display_mode = ISO_MODE;
+	display.low_col = conv_int_col(LOW_COLOR);
+	display.high_col = conv_int_col(HIGH_COLOR);
+	return (display);
 }
 
 int	main(int ac, char **av)
