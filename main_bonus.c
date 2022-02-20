@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 20:16:38 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/20 18:58:06 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/20 18:58:30 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,7 @@ int	main(int ac, char **av)
 	data.display = &display;
 	draw_wf(&data);
 	mlx_key_hook(mlx.win, &on_keyboard_pressed, &data);
+	mlx_hook(mlx.win, 6, 1 << 6, &on_mouse_move, &data);
+	mlx_hook(mlx.win, 2, 1, &on_keyboard_press, &data);
 	mlx_loop(mlx.mlx);
 }
