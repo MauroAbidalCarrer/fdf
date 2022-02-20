@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 17:33:10 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/20 19:55:59 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/20 23:18:08 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_wf
 	double	max_iso_magnitude;
 	double	max_per_magnitude;
 	double	max_height;
+	double	min_height;
 }	t_wf;
 t_wf	parse_file(char *pathname);
 

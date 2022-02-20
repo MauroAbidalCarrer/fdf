@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 19:17:14 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/17 22:38:53 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/02/20 23:28:00 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ t_point_n_col	get_pnc(t_v sp, double height, t_display_data display, t_wf wf)
 {
 	t_point_n_col	pnc;
 
-	height /= wf.max_height;
+	height -= wf.min_height;
+	height /= wf.max_height - wf.min_height;
 	pnc.point = sp;
 	pnc.col = lerp_v(display.low_col, display.high_col, height);
 	return (pnc);
