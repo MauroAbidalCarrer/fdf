@@ -6,7 +6,7 @@
 /*   By: maabidal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/13 00:01:54 by maabidal          #+#    #+#             */
-/*   Updated: 2022/02/20 23:23:10 by maabidal         ###   ########.fr       */
+/*   Updated: 2022/03/06 14:24:19 by maabidal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ t_wf	init_dimensions(char *pathname)
 	return (wf);
 }
 
-#include<stdio.h>
 t_wf	set_vertex(t_wf wf, int x, int y, char *str_height)
 {
 	double	value;
@@ -103,7 +102,6 @@ t_wf	fill_wf(t_wf wf, char *pathname)
 		line = get_next_line(fd);
 		point[Y]++;
 	}
-printf("min height = %f\n", wf.min_height);
 	return (wf);
 }
 
